@@ -6,19 +6,19 @@ def lcs2(a, b):
     n = len(a) 
     m = len(b) 
   
-    # declaring the array for storing the dp values 
-    counter = [[None]*(m+1) for i in range(n+1)] 
+    table = [[0] * (m + 1)] * (n + 1)
 
-    for i in range(n+1): 
-        for j in range(m+1): 
-            if i == 0 or j == 0 : 
-                counter[i][j] = 0
-            elif a[i-1] == b[j-1]: 
-                counter[i][j] = counter[i-1][j-1]+1
+    for ni in range(1, n+1): 
+        for mi in range(1, m+1): 
+            if a[ni-1] == b[mi-1]: 
+                table[ni][mi] = table[ni-1][mi-1]+1
             else: 
-                counter[i][j] = max(counter[i-1][j] , counter[i][j-1]) 
+                table[ni][mi] = max(
+                    table[ni-1][mi],
+                    table[ni][mi-1]
+                ) 
                 
-    return counter[m][n]
+    return table[n][m]
 
 if __name__ == '__main__':
     input = sys.stdin.read()

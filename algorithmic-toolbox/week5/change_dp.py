@@ -11,7 +11,6 @@ def get_change(money):
       if m >= dominations[c]:
         number_of_coin = min(number_of_coin, min_coins_number[m - dominations[c]] + 1)
     min_coins_number[m] = number_of_coin
-    print(number_of_coin)
   return min_coins_number[money]
 
 

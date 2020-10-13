@@ -6,7 +6,7 @@ def lcs2(a, b):
     n = len(a) 
     m = len(b) 
   
-    table = [[0] * (m + 1)] * (n + 1)
+    table = [[0 for i in range(m + 1)] for j in range(n + 1)]
 
     for ni in range(1, n+1): 
         for mi in range(1, m+1): 

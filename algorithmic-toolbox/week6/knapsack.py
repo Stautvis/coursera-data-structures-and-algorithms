@@ -2,11 +2,12 @@
 import sys
 
 def optimal_weight(W, w):
-    # write your code here
+    if 0 in [W, w]: return 0
     result = 0
-    for x in w:
+    
+    for x in sorted(w):
         if result + x <= W:
-            result = result + x
+            result += x
     return result
 
 if __name__ == '__main__':

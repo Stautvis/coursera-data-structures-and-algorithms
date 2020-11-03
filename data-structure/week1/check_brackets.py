@@ -16,17 +16,17 @@ def find_mismatch(text):
         if char not in "(){}[]": continue # if not required char - move next
         if char in "})]" and len(stack) == 0: return i + 1 # if no opening tag, but found closing - return index
         if char in "([{":
-            stack.append(char)
+            stack.append(Bracket(char, i))
             continue
 
         if len(stack) == 0: return i + 1
         top = stack.pop()
 
-        if  ((top == "[" and char != "]") or
-            (top == "(" and char != ")") or
-            (top == "{" and char != "}")):
+        if  ((top.char == "[" and char != "]") or
+            (top.char == "(" and char != ")") or
+            (top.char == "{" and char != "}")):
             return i + 1
-    return "Success" if len(stack) == 0 else len(text)
+    return "Success" if len(stack) == 0 else stack.pop().position + 1
 
 
 

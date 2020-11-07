@@ -13,12 +13,27 @@ def build_heap(data):
     #
     # TODO: replace by a more efficient implementation
     swaps = []
-    for i in range(len(data)):
-        for j in range(i + 1, len(data)):
-            if data[i] > data[j]:
-                swaps.append((i, j))
-                data[i], data[j] = data[j], data[i]
+
+    n = len(data)
+    for i in range(n // 2 - 1, -1, -1):
+        shift_up(data, i, swaps)
     return swaps
+
+def shift_up(data, i, swaps):
+    n = len(data)
+    p = i # root
+    l = 2 * i + 1# left
+    r = 2 * i + 2 # right
+  
+    if l < n and data[l] < data[p]: 
+        p = l
+    if r < n and data[r] < data[p]: 
+        p = r;
+
+    if p != i:
+        swaps.append((i, p))
+        data[i], data[p] = data[p], data[i]; 
+        shift_up(data, p, swaps); 
 
 
 def main():

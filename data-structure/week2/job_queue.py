@@ -1,18 +1,32 @@
-# python3
+import heapq
 
-from collections import namedtuple
+class Worker:
+    def __init__(self, id, release_time = 0):
+        self.id = id
+        self.release_time = release_time
 
-AssignedJob = namedtuple("AssignedJob", ["worker", "started_at"])
+    def __lt__(self, other):
+        if self.release_time == other.release_time:
+            return self.id < other.id
+        else:
+            return self.release_time < other.release_time
 
+    def __gt__(self, other):
+        if self.release_time == other.release_time:
+            return self.id > other.id
+        else:
+            return self.release_time > other.release_time
 
 def assign_jobs(n_workers, jobs):
     # TODO: replace this code with a faster algorithm.
     result = []
-    next_free_time = [0] * n_workers
+    worker_queue = [Worker(i) for i in range(n_workers)]
     for job in jobs:
-        next_worker = min(range(n_workers), key=lambda w: next_free_time[w])
-        result.append(AssignedJob(next_worker, next_free_time[next_worker]))
-        next_free_time[next_worker] += job
+        worker = heapq.heappop(worker_queue) #gets lowest worker(min time or id) from heap
+
+        result.append((worker.id, worker.release_time)) #store result
+        worker.release_time += job #adds more processing time
+        heapq.heappush(worker_queue, worker) #puts to heap
 
     return result
 
@@ -25,7 +39,7 @@ def main():
     assigned_jobs = assign_jobs(n_workers, jobs)
 
     for job in assigned_jobs:
-        print(job.worker, job.started_at)
+        print(job[0], job[1])
 
 
 if __name__ == "__main__":

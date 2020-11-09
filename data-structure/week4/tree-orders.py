@@ -17,25 +17,47 @@ class TreeOrders:
       self.right[i] = c
 
   def inOrder(self):
-    self.result = []
-    # Finish the implementation
-    # You may need to add a new recursive method to do that
-                
-    return self.result
+    current_id = 0
+    stack = []
 
-  def preOrder(self):
-    self.result = []
-    # Finish the implementation
-    # You may need to add a new recursive method to do that
-                
-    return self.result
+    while True:
+      if current_id != -1:
+        stack.append(current_id)
+        current_id = self.left[current_id]
+      elif stack:
+        current_id = stack.pop()
+        yield self.key[current_id]
+        current_id = self.right[current_id]
+      else:
+        break
 
-  def postOrder(self):
-    self.result = []
-    # Finish the implementation
-    # You may need to add a new recursive method to do that
-                
-    return self.result
+  def preOrder(self, index = 0):
+    if index == 0:
+      self.result = []
+
+    self.result.append(self.key[index])
+
+    if self.left[index] != -1:
+      self.preOrder(self.left[index])
+    if self.right[index] != -1:
+      self.preOrder(self.right[index])
+  
+    if index == 0:
+      return self.result
+
+  def postOrder(self,index = 0):
+    if index == 0:
+      self.result = []
+
+    if self.left[index] != -1:
+      self.postOrder(self.left[index])
+    if self.right[index] != -1:
+      self.postOrder(self.right[index])
+    
+    self.result.append(self.key[index])
+  
+    if index == 0:
+      return self.result
 
 def main():
 	tree = TreeOrders()

@@ -11,23 +11,28 @@ def pisano_period(m):
             return i + 1
 
 def fibonacci_partial_sum_naive(from_, to):
-    period = pisano_period(10)
-    return calc_fib(from_ % period, to % period) % 10
+    period = pisano_period(100)
+
+    from_ %= period
+    to %= period
+    
+    if from_ > to: from_, to = to, from_
+
+    return calc_fib(from_, to) % 10
 
 
 def calc_fib(from_, to):
     sum = 0
-
-    current = 0
-    next  = 1
-
+    previous = 0
+    current  = 1
+    
     for i in range(to + 1):
         if i >= from_:
-            sum += current
+            sum += previous
+        previous, current = current, (previous + current) % 10
+        
+    return  sum
 
-        current, next = next, (current + next) % 10
-
-    return sum % 10
 
 
 from_, to = map(int, input().split())

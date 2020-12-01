@@ -30,7 +30,6 @@ class TreeHeight:
 
 
 
-
 def main():
 	tree = TreeHeight()
 	tree.read()

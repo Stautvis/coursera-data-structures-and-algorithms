@@ -7,7 +7,6 @@ def lcs3(a, b, c):
     m = len(b)
     l = len(c)
 
-
     if 0 in [n, m, l]: return 0 #if either one sequence has no elements, then there isn't common subsequence
     lcs = [[[0 for i in range(l+1)] for j in range(m+1)] for k in range(n+1)] 
 

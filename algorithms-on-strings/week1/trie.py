@@ -11,7 +11,24 @@ import sys
 # values are the node IDs to which these edges lead.
 def build_trie(patterns):
     tree = dict()
-    # write your code here
+    tree[0] = dict()
+    counter = 0
+    for pattern in patterns:  
+        nodeID = 0
+
+        for letter in pattern:
+            if nodeID not in tree.keys():
+                tree[counter] = dict()
+                nodeID = counter
+                
+
+            if letter not in tree[nodeID].keys():
+                counter += 1
+                node = tree[nodeID]
+                node[letter] = counter
+                nodeID = counter
+            else:
+                nodeID = tree[nodeID][letter]
     return tree
 
 

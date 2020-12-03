@@ -1,25 +1,66 @@
 # python3
 import sys
 
-NA = -1
-
 class Node:
 	def __init__ (self):
-		self.next = [NA] * 4
+		self.next = {
+			'A': -1,
+			'C': -1,
+			'G': -1,
+			'T': -1,
+		}
+	def is_leaf(self):
+		for node in self.next.values():
+			if node != -1:
+				return False
+		return True
 
+def build_trie(patterns):
+	trie = Node()
+	for pattern in patterns:
+		current_node = trie
+		for letter in pattern:
+			if current_node.next[letter] == -1:
+				current_node.next[letter] = Node()
+			current_node = current_node.next[letter]
+	return trie
 def solve (text, n, patterns):
 	result = []
+	n = 0
+	trie = build_trie(patterns)
 
-	// write your code here
+	while n < len(text) - 1:
+		if prefix_trie_matching(text[n:], trie):
+			result.append(n)
+		n += 1
 
 	return result
+def prefix_trie_matching(text, trie):
+	n = 0
+	
+	pattern = ""
+	letter = text[n]
+	current_node = trie
 
-text = sys.stdin.readline ().strip ()
-n = int (sys.stdin.readline ().strip ())
-patterns = []
-for i in range (n):
-	patterns += [sys.stdin.readline ().strip ()]
+	while True:
+		if current_node.is_leaf():
+			return True		
+		elif current_node.next[letter] != -1:
+			current_node = current_node.next[letter]
+			n += 1
+			letter = text[n] if len(text) > n else letter
+		else:
+			return False
+		
+		pattern += letter
 
-ans = solve (text, n, patterns)
+if __name__ == "__main__":
+	text = sys.stdin.readline ().strip ()
+	n = int (sys.stdin.readline ().strip ())
+	patterns = []
+	for i in range (n):
+		patterns += [sys.stdin.readline ().strip ()]
 
-sys.stdout.write (' '.join (map (str, ans)) + '\n')
+	ans = solve(text, n, patterns)
+
+	sys.stdout.write (' '.join (map (str, ans)) + '\n')

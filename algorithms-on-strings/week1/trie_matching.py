@@ -29,7 +29,7 @@ def solve (text, n, patterns):
 	n = 0
 	trie = build_trie(patterns)
 
-	while n < len(text) - 1:
+	while n < len(text):
 		if prefix_trie_matching(text[n:], trie):
 			result.append(n)
 		n += 1
@@ -37,22 +37,22 @@ def solve (text, n, patterns):
 	return result
 def prefix_trie_matching(text, trie):
 	n = 0
-	
-	pattern = ""
+
 	letter = text[n]
 	current_node = trie
 
 	while True:
 		if current_node.is_leaf():
-			return True		
+				return True	
 		elif current_node.next[letter] != -1:
 			current_node = current_node.next[letter]
-			n += 1
-			letter = text[n] if len(text) > n else letter
+			if n < len(text) - 1:
+				letter = text[n + 1]
+				n += 1
+			else:
+				return current_node.is_leaf()
 		else:
 			return False
-		
-		pattern += letter
 
 if __name__ == "__main__":
 	text = sys.stdin.readline ().strip ()

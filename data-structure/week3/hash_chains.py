@@ -24,9 +24,6 @@ class Queries:
             hashed = (hashed * self._multiplier + ord(c)) % self._prime
         return hashed % self.bucket_count
 
-    def read_query(self):
-        return 
-
     def find(self, string):
         hashed = self.__hash(string)
         if hashed in self.queries:
@@ -37,14 +34,14 @@ class Queries:
     def add(self, string):
         hashed = self.__hash(string)
         if hashed in self.queries:
-            self.queries[hashed].add(string)
+            if string not in self.queries[hashed]:
+                self.queries[hashed].insert(0, string) 
         else:
-            self.queries[hashed] = set()
-            self.queries[hashed].add(string)
+            self.queries[hashed] = [string]
 
     def check(self, hash):
         if hash in self.queries:
-            return ' '.join([str(item) for item in list(self.queries[hash])[::-1]])
+            return ' '.join(self.queries[hash])
         return ""
 
     def delete(self, string):

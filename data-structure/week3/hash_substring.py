@@ -8,12 +8,12 @@ def print_occurrences(output):
 
 def get_occurrences(pattern, text):
     p = 1000000007
-    x = random.randrange(1, len(pattern) - 1)
+    x = random.randint(1, p)
     result = []
     pattern_hashed = poly_hash(pattern, p, x)
     h = precompute_hashes(text, pattern, p, x)
 
-    for index in range(len(text) - len(pattern)):
+    for index in range(len(text) - len(pattern) + 1):
         if pattern_hashed != h[index]:
             continue
         if text[index:index + len(pattern)] == pattern:
@@ -22,14 +22,17 @@ def get_occurrences(pattern, text):
 
 def precompute_hashes(text, pattern, primer, multiplier):
     text_range = len(text) - len(pattern)
-    h = [None for _ in range(text_range + 1)]
-    string = text[text_range:len(text) - 1]
-    h[text_range] = hash(string)
+    h = [0] * (text_range + 1)
+    string = text[-len(pattern):]
+    h[text_range] = poly_hash(string, primer, multiplier)
     y = 1
-    for index in range(1,len(pattern)):
+    for index in range(1,len(pattern) + 1):
         y = (y * multiplier) % primer
-    for index in range(text_range - 1, 0, -1):
-        h[index] = (multiplier * h[index + 1] + ord(text[index]) - y * ord(text[index + len(pattern)])) % primer
+    for index in reversed(range(text_range)):
+        hash_ = (multiplier * h[index + 1] + ord(text[index]) - y * ord(text[index + len(pattern)]))
+        while hash_ < 0:
+            hash_ += primer
+        h[index] = hash_ % primer
     return h
 
 

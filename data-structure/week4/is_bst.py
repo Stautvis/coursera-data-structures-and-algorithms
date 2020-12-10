@@ -2,18 +2,20 @@
 
 import sys, threading
 
-sys.setrecursionlimit(10**7) # max depth of recursion
-threading.stack_size(2**25)  # new thread will get stack of such size
+sys.setrecursionlimit(10**6) # max depth of recursion
+threading.stack_size(2**27)  # new thread will get stack of such size
 
 def IsBinarySearchTree(tree):
-  left_stack = []
-  right_stack = []
-  current_root = 0
+  if len(tree) == 0:
+    return True
+  return isBST(tree)
 
-  while True:
-    if current_root != -1:
-      left_stack.append()
-  return True
+def isBST(node, i = 0, min_number = -sys.maxsize - 1, max_number = sys.maxsize):
+  if min_number > node[i][0] or  max_number < node[i][0]:
+    return False
+
+  return ((True if node[i][1] == -1 else isBST(node, node[i][1], min_number, min(max_number, node[i][0]))) and 
+          (True if node[i][2] == -1 else isBST(node, node[i][2], max(min_number, node[i][0]),  max_number)))
 
 
 def main():

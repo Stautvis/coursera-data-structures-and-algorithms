@@ -1,28 +1,29 @@
 #Uses python3
 
+import queue
 import sys
 
-def negative_cycle(adj, cost):
-    num_of_vertices = len(adj)
-    distance = [float("inf")] * num_of_vertices
-    distance[0] = 0
 
-    for _ in range(num_of_vertices - 1):
-        for u in range(num_of_vertices):
-            for i, v in enumerate(adj[u]):
-                weight = distance[u] + cost[u][i]
-                if distance[v] > weight:
-                    distance[v] = weight
+def negative_cycle(graph, V, E, src): 
+    inf = 100000
+    dis = [inf] * V
+    dis[src] = 0
+  
+    for i in range(V - 1): 
+        for j in range(E): 
+            if dis[graph[j][0]] + graph[j][2] < dis[graph[j][1]]: 
+                dis[graph[j][1]] = dis[graph[j][0]] + graph[j][2] 
 
-    for u in range(num_of_vertices):
-        for i, v in enumerate(adj[u]):
-            weight = distance[u] + cost[u][i]
-            if distance[v] > weight:
-                return 1
-
+    for i in range(E): 
+        x = graph[i][0] 
+        y = graph[i][1] 
+        weight = graph[i][2] 
+        if dis[x] != inf and dis[x] + weight < dis[y]: 
+            return 1
     return 0
+  
 
-
+ 
 
 if __name__ == '__main__':
     input = sys.stdin.read()
@@ -33,7 +34,8 @@ if __name__ == '__main__':
     data = data[3 * m:]
     adj = [[] for _ in range(n)]
     cost = [[] for _ in range(n)]
+    graph = []
+
     for ((a, b), w) in edges:
-        adj[a - 1].append(b - 1)
-        cost[a - 1].append(w)
-    print(negative_cycle(adj, cost))
+        graph.append([a - 1, b - 1, w])
+    print(negative_cycle(graph, n, m, 0))

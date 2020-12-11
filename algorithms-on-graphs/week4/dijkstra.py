@@ -3,18 +3,29 @@
 import sys
 import queue
 
+class Node(object):
+    def __init__(self, index, cost):
+        self.index = index
+        self.cost = cost
+    def __lt__(self, obj):
+        return self.cost < obj.cost
+    def __cmp__(self, other):
+        return self.cost - other.cost
 
-def distance(adj: list, cost: list, s:int, t:int):
+def distance(adj:list, cost:list, s:int, t:int):
+    #write your code here
     distance=[float('inf')]*len(adj)
     distance[s] = 0
-    queue = [s]
-    while queue:
-        q = queue.pop(0)
-        for i in range(len(adj[q])):
-            index = adj[q][i]
-            if distance[index] > distance[q] + cost[q][i]:
-                distance[index] = distance[q] + cost[q][i]
-                queue.append(index)
+    q = queue.PriorityQueue()
+    q.put(Node(s, distance[s]))
+    while not q.empty():
+         u = q.get()
+         u_index = u.index
+         for v in adj[u_index]:
+             v_index = adj[u_index].index(v)
+             if distance[v] > distance[u_index] + cost[u_index][v_index]:
+                distance[v] = distance[u_index] + cost[u_index][v_index]
+                q.put(Node(v, distance[v]))
     return distance[t] if distance[t] != float('inf') else -1
 
 
